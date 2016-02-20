@@ -105,6 +105,7 @@ module.exports = function(grunt) {
       }
     },
 
+    // the build script
     requirejs: {
       compile: {
         options: {
@@ -154,6 +155,8 @@ module.exports = function(grunt) {
         }
       }
     },
+
+    // javascript syntax checker
     jshint: {
       options: {
        // reporter: require('jshint-stylish'),
@@ -161,6 +164,8 @@ module.exports = function(grunt) {
       },
       all: [ 'src/**/*.js' ]
     },
+
+    // check coding-style: https://github.com/CometVisu/CometVisu/wiki/Coding-style
     jscs: {
       main: {
         options: {
@@ -181,6 +186,34 @@ module.exports = function(grunt) {
           src: [ "src/**/*.js"]
         }
       }
+    },
+
+    // make a zipfile
+    compress: {
+      tar: {
+        options: {
+          mode: 'tgz',
+          level: 9,
+          archive: function() {
+            return "Cometvisu-"+pkg.version+".tar.gz"
+          }
+        },
+        files: [
+          { expand: true, cwd: 'release', src: ['./**'], dest: 'cometvisu/' } // includes files in path
+        ]
+      },
+      zip: {
+        options: {
+          mode: 'zip',
+          level: 9,
+          archive: function() {
+            return "Cometvisu-"+pkg.version+".zip"
+          }
+        },
+        files: [
+          { expand: true, cwd: 'release', src: ['./**'], dest: 'cometvisu/' } // includes files in path
+        ]
+      }
     }
   });
 
@@ -190,9 +223,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-jscs");
   grunt.loadNpmTasks('grunt-banner');
   grunt.loadNpmTasks('grunt-manifest');
+  grunt.loadNpmTasks('grunt-contrib-compress');
 
   // Default task runs all code checks, updates the banner and builds the release
-  grunt.registerTask('default', [ 'jshint', 'jscs', 'usebanner', 'requirejs', 'manifest' ]);
+  //grunt.registerTask('default', [ 'jshint', 'jscs', 'usebanner', 'requirejs', 'manifest', 'compress:tar', 'compress:zip' ]);
+  grunt.registerTask('default', [ 'jscs', 'usebanner', 'requirejs', 'manifest', 'compress:tar', 'compress:zip' ]);
 
   grunt.registerTask('lint', [ 'jshint', 'jscs']);
 };
