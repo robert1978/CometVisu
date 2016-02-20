@@ -8,13 +8,13 @@ The other part is the CometVisu Visualisation. It is a template engine
 that creates an easy to use, web based visualisation. All the necessary
 configuration is done in a simple XML file.
 
-*** Important note on diagram-backend ***
+**Important note on diagram-backend**
 It uses a modified version of rrdtool, adding a "fetchj" option.
 You can find source and Debian-packages here:
 http://repo.wiregate.de/wiregate/pool/wiregate-1.0/main/r/
 http://repo.wiregate.de/wiregate/pool/wiregate-1.0/main/libr/
 
-*** Notes on the KNX-backend ***
+**Notes on the KNX-backend**
 The KNX-backend uses
 /usr/lib/cgi-bin/l : a dummy-login
 /usr/lib/cgi-bin/r : a symlink to /usr/bin/eibread-cgi
