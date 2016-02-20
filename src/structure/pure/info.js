@@ -30,7 +30,7 @@ define( ['_common'], function( design ) {
     var $e = $(element);
     
     // create the main structure
-    var ret_val = basicdesign.createDefaultWidget( 'info', $e, path, flavour, type, this.update );
+    var ret_val = design.basicdesign.createDefaultWidget( 'info', $e, path, flavour, type, this.update );
     
     // create the actor
     ret_val += '<div class="actor"><div class="value">-</div></div>';
