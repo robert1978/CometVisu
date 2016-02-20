@@ -214,6 +214,43 @@ module.exports = function(grunt) {
           { expand: true, cwd: 'release', src: ['./**'], dest: 'cometvisu/' } // includes files in path
         ]
       }
+    },
+
+    'github-release': {
+      options: {
+        repository: 'peuter/cometvisu',
+        release: {
+          tag_name: pkg.version,
+          name: pkg.version,
+          body: pkg.description
+        }
+      },
+      files: {
+        src: [ "Cometvisu-"+pkg.version+".zip", "Cometvisu-"+pkg.version+".tar.gz" ]
+      }
+    },
+    prompt: {
+      target: {
+        options: {
+          questions: [
+            {
+              config: 'github-release.options.auth.user', // set the user to whatever is typed for this question
+              type: 'input',
+              message: 'GitHub username:'
+            },
+            {
+              config: 'github-release.options.auth.password', // set the password to whatever is typed for this question
+              type: 'password',
+              message: 'GitHub password:'
+            }
+          ]
+        }
+      }
+    },
+
+    clean: {
+      archives : ['*.zip', '*.gz'],
+      release: ['release/']
     }
   });
 
@@ -224,10 +261,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-banner');
   grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-github-releaser');
+  grunt.loadNpmTasks('grunt-prompt');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task runs all code checks, updates the banner and builds the release
   //grunt.registerTask('default', [ 'jshint', 'jscs', 'usebanner', 'requirejs', 'manifest', 'compress:tar', 'compress:zip' ]);
-  grunt.registerTask('default', [ 'jscs', 'usebanner', 'requirejs', 'manifest', 'compress:tar', 'compress:zip' ]);
+  grunt.registerTask('build', [ 'jscs', 'usebanner', 'requirejs', 'manifest', 'compress:tar', 'compress:zip' ]);
+  grunt.registerTask('lint', [ 'jshint', 'jscs' ]);
 
-  grunt.registerTask('lint', [ 'jshint', 'jscs']);
+  grunt.registerTask('release', [ 'clean', 'prompt', 'default', 'github-release' ]);
+
+  grunt.registerTask('default', 'build');
 };
