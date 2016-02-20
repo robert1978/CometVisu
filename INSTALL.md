@@ -33,8 +33,7 @@ few simple steps:
    for a shared server, but assuming the typical useage of the WireGate it
    should be fine.
    
-NOTE:
-=====
+###NOTE:
 
 Please allways also refer the online documentation at 
 

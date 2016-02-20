@@ -23,8 +23,7 @@ eibread/write-cgi are part of a modified eibd-clients package here:
 http://repo.wiregate.de/wiregate/pool/wiregate-1.0/main/e/
 (source: bcusdk)
 
-NOTE:
-=====
+####NOTE:
 
 Please always also refer the online documentation at 
 
