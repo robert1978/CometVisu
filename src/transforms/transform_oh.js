@@ -18,11 +18,11 @@
 define( ['transform_default'], function( Transform ) {
   "use strict";
   
-/**
- * This class defines the default transforms: encode: transform JavaScript to
- * bus value decode: transform bus to JavaScript value
- */
-Transform.addTransform('OH', {
+  /**
+   * This class defines the default transforms: encode: transform JavaScript to
+   * bus value decode: transform bus to JavaScript value
+   */
+  Transform.addTransform('OH', {
   'switch' : {
     name : 'OH_Switch',
     encode : function(phy) {
@@ -97,8 +97,7 @@ Transform.addTransform('OH', {
     },
     decode : function(str) {
       if (str=="NaN" || str=='Uninitialized') return '-';
-      var date = new Date(str);
-      return date;
+      return new Date(str);
     }
   },
   'time' : {
@@ -106,16 +105,15 @@ Transform.addTransform('OH', {
     encode : function(phy) {
       if (phy instanceof Date) {
         return phy.toLocaleTimeString();
-    } else {
-      return phy;
+      } else {
+        return phy;
       }
     },
     decode : function(str) {
       if (str=="NaN" || str=='Uninitialized') return '-';
-      var date = new Date(str);
-      return date;
+      return new Date(str);
     }
-   },
+  },
   'color' : {
     name : "OH_Color",
     encode : function(rgb) {

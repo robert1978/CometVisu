@@ -1,5 +1,7 @@
-/* page.js (c) 2012 by Christian Mayer [CometVisu at ChristianMayer dot de]
- *
+/* page.js 
+ * 
+ * copyright (c) 2010-2016 by Christian Mayer (ChristianMayer) [CometVisu at ChristianMayer dot de]
+ * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 3 of the License, or (at your option)
@@ -7,13 +9,18 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+ *
+ * @module Page 
+ * @title  CometVisu Page 
+ * @version 0.9.1-dev
  */
+
 
 define( ['_common'], function( design ) {
   "use strict";
@@ -21,7 +28,7 @@ define( ['_common'], function( design ) {
     basicdesign = design.basicdesign,
     allPages = '';
  
-design.basicdesign.addCreator('page', {
+  design.basicdesign.addCreator('page', {
   create: function( page, path, flavour, type ) {
     var $p = $(page);
     
@@ -33,7 +40,7 @@ design.basicdesign.addCreator('page', {
     }
 
     var name    = $p.attr('name');
-    var type    = $p.attr('type') || 'text';              //text, 2d or 3d
+    type    = $p.attr('type') || 'text';              //text, 2d or 3d
     var backdrop = $p.attr('backdrop');
     var showtopnavigation = $p.attr('showtopnavigation');
     var showfooter = $p.attr('showfooter');
@@ -64,7 +71,10 @@ design.basicdesign.addCreator('page', {
     shownavbar.left = $p.attr('shownavbar-left') || shownavbar.left;
     shownavbar.right = $p.attr('shownavbar-right') || shownavbar.right;
     var bindClickToWidget = templateEngine.bindClickToWidget;
-    if ($p.attr("bind_click_to_widget")) bindClickToWidget = $p.attr("bind_click_to_widget")=="true";
+    if ($p.attr("bind_click_to_widget")) {
+      // @todo use this value
+      bindClickToWidget = $p.attr("bind_click_to_widget")=="true";
+    }
     if( $p.attr('flavour') ) flavour = $p.attr('flavour');// sub design choice
     var wstyle  = '';                                     // widget style
     if( $p.attr('align') ) wstyle += 'text-align:' + $p.attr('align') + ';';
@@ -156,11 +166,11 @@ design.basicdesign.addCreator('page', {
       'address': address
     });
     $( childs ).each( function(i){
-        var subelement = templateEngine.create_pages( childs[i], path + '_' + i, flavour, type );
-        if( undefined === subelement )
-          return;
+      var subelement = templateEngine.create_pages( childs[i], path + '_' + i, flavour, type );
+      if( undefined === subelement )
+        return;
         
-        container += subelement;
+      container += subelement;
     } );
     subpage += container + '</div></div>';
     allPages = subpage + allPages;
@@ -201,8 +211,8 @@ design.basicdesign.addCreator('page', {
         }
     }
   },
-  action: function( path, actor, isCaneled ) {
-    if( isCaneled ) return;
+  action: function( path, actor, isCanceled ) {
+    if( isCanceled ) return;
     
     templateEngine.scrollToPage( path + '_' );
   }

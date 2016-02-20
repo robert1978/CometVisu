@@ -1,0 +1,33 @@
+{
+  "name": "Cometvisu",
+  "version": "0.9.1-dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cometvisu/cometvisu.git"
+  },
+  "scripts": {},
+  "license": "GPL",
+  "authors": [
+    {
+      "name": "Christian Mayer (ChristianMayer)",
+      "email": "CometVisu at ChristianMayer dot de"
+    },
+    {
+      "name": "Tobias Bräutigam (Peuter)",
+      "email": "tbraeutigam at gmail dot com"
+    }
+  ],
+  "devDependencies": {
+    "csso": "^1.5.4",
+    "grunt": "latest",
+    "grunt-banner": "^0.6.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-contrib-uglify": "^0.11.1",
+    "grunt-jscs": "^2.7.0",
+    "grunt-manifest": "^0.4.4",
+    "jshint-stylish": "^2.1.0",
+    "rjs-build-analysis": "0.0.3"
+  }
+}

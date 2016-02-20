@@ -45,9 +45,9 @@ define( ['structure_custom', 'css!plugins/infoaction/infoaction.css'  ], functio
   VisuDesign_Custom.prototype.addCreator("infoaction", {
       create: function(element, path, flavour, type) {
         return createWidget(false, element, path, flavour, type);
-      },
+      }
     });
-    function createWidget(isInfo, element, path, flavour, type) {
+  function createWidget(isInfo, element, path, flavour, type) {
       var $e = $(element);
 
       // create the main structure
@@ -60,13 +60,13 @@ define( ['structure_custom', 'css!plugins/infoaction/infoaction.css'  ], functio
       return ret_val + '</div>';
     }
    
-    function getWidgetElements(xmlElement, path, flavour, type) {
+  function getWidgetElements(xmlElement, path, flavour, type) {
       var infoWidget = $('widgetinfo > *', xmlElement).first()[0];
       var actionWidget = $('widgetaction > *', xmlElement).first()[0];
-      var data = templateEngine.widgetDataInsert( path+"_0", {
+      templateEngine.widgetDataInsert( path+"_0", {
         containerClass           : "widgetinfo"
       } );
-      data = templateEngine.widgetDataInsert( path+"_1", {
+      templateEngine.widgetDataInsert( path+"_1", {
         containerClass           : "widgetaction"
       } );
       

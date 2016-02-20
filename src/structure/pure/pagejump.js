@@ -1,5 +1,7 @@
-/* pagejump.js (c) 2012 by Christian Mayer [CometVisu at ChristianMayer dot de]
- *
+/* pagejump.js 
+ * 
+ * copyright (c) 2010-2016 by Christian Mayer (ChristianMayer) [CometVisu at ChristianMayer dot de]
+ * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 3 of the License, or (at your option)
@@ -7,19 +9,24 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+ *
+ * @module Pagejump 
+ * @title  CometVisu Pagejump 
+ * @version 0.9.1-dev
  */
+
 
 define( ['_common'], function( design ) {
   "use strict";
   var basicdesign = design.basicdesign;
   
-design.basicdesign.addCreator('pagejump', {
+  design.basicdesign.addCreator('pagejump', {
   create: function( element, path, flavour, type ) {
     var $e = $(element);
     var layout = $e.children('layout')[0];
@@ -53,7 +60,7 @@ design.basicdesign.addCreator('pagejump', {
     var info = '';
     var widgetInfo = $('widgetinfo > *', $e).first()[0];
     if (widgetInfo!=undefined) {
-      var data = templateEngine.widgetDataInsert( path+"_0", {
+      data = templateEngine.widgetDataInsert( path+"_0", {
         containerClass           : "widgetinfo"
       } );
       info = templateEngine.create_pages(widgetInfo, path+"_0", flavour, widgetInfo.nodeName);
@@ -80,7 +87,7 @@ design.basicdesign.addCreator('pagejump', {
   }
 });
 
-$(window).bind('scrolltopage', function( event, page_id ){
+  $(window).bind('scrolltopage', function( event, page_id ){
   var page = $('#' + page_id);
   var name = templateEngine.widgetData[page_id].name;
   
@@ -89,7 +96,8 @@ $(window).bind('scrolltopage', function( event, page_id ){
   $('.pagejump.active_ancestor').removeClass('active_ancestor');
   
   // and set the new active ones
-  $('.pagejump').each( function(){
+  var pagejumps = $('.pagejump');
+  pagejumps.each( function() {
     var $pagejump = $(this);
     var data = templateEngine.widgetDataGetByElement( this );
     if( name == data.target)
@@ -105,8 +113,8 @@ $(window).bind('scrolltopage', function( event, page_id ){
     var 
       parentId   = parentPage.attr('id'),
       parentName = templateEngine.widgetData[ parentId ].name;
-    
-    $('.pagejump').each( function(){
+
+    pagejumps.each( function(){
       var $pagejump = $(this);
       var data = templateEngine.widgetDataGetByElement( this );
       if( parentName == data.target || (data.active_scope=="path" && data.path!=undefined && data.path.match(parentName+"$")) )

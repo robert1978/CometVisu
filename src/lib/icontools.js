@@ -1,5 +1,7 @@
-/* icontools.js (c) 2015 by Christian Mayer [CometVisu at ChristianMayer dot de]
- *
+/* icontools.js 
+ * 
+ * copyright (c) 2010-2016 by Christian Mayer (ChristianMayer) [CometVisu at ChristianMayer dot de]
+ * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 3 of the License, or (at your option)
@@ -7,22 +9,27 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+ *
+ * @module Icontools 
+ * @title  CometVisu Icontools 
+ * @version 0.9.1-dev
  */
+
 
 define( [], function() {
   "use strict";
 
-(function( window, undefined ){
-  // "global" functions (=> state less)
-  var hexColorRegEx = /#[0-9a-fA-F]{6}/,
+  (function( window, undefined ){
+    // "global" functions (=> state less)
+    var hexColorRegEx = /#[0-9a-fA-F]{6}/,
       colorMapping = { // as a convenience, definition of a few colors
-        white:  '#ffffff', 
+        white:  '#ffffff',
         orange: '#ff8000',
         red:    '#ff4444',
         green:  '#44ff44',
@@ -45,11 +52,11 @@ define( [], function() {
               // it should be enough to test only the first element - the other
               // elements will be covered anyway...
               if( iconDelay[0][2] in iconDelay[0][1] )
-                window.fillRecoloredIcon( iconDelay.shift()[0] ); 
+                window.fillRecoloredIcon( iconDelay.shift()[0] );
               else
                 break;
             }
-            
+
             if( 0 === iconDelay.length )
             {
               clearInterval( iconDelayFn );
@@ -65,7 +72,7 @@ define( [], function() {
         return '<canvas class="' + iconId + ' ' + classes + '" ' + styling + '/>';
       },
       /**
-       * Fill the canvas with the ImageData. Also resize the 
+       * Fill the canvas with the ImageData. Also resize the
        * canvas at the same time.
        */
       fillCanvas = function( canvas, imageData )
@@ -78,7 +85,7 @@ define( [], function() {
        * Two versions of a recoloring funtion to work around an Android bug:
        * http://stackoverflow.com/questions/14969496/html5-canvas-pixel-manipulation-problems-on-mobile-devices-when-setting-the-alph
        * https://code.google.com/p/android/issues/detail?id=17565
-       * 
+       *
        */
       innerRecolorLoop = navigator.userAgent.toLowerCase().indexOf('android') > -1 && parseFloat(navigator.userAgent.slice(navigator.userAgent.toLowerCase().indexOf('android')+8)) < 4.4 ?
         function( r, g, b, data, length ) // for Android version < 4.4
@@ -115,121 +122,121 @@ define( [], function() {
       tmpCanvas = $('<canvas/>')[0],
       tmpCtx    = tmpCanvas.getContext('2d'),
       /**
-       * Do the recoloring based on @param thisIcon and store it in the 
+       * Do the recoloring based on @param thisIcon and store it in the
        * hash @param thisIconColors.
        */
       doRecolorNonTransparent = function( color, thisIcon, thisIconColors )
       {
         if( thisIconColors[color] )
           return; // done, already recolored
-          
+
         var
           width  = tmpCanvas.width  = thisIcon.width,
           height = tmpCanvas.height = thisIcon.height;
         tmpCtx.drawImage( thisIcon, 0, 0 );
-    
+
         var imageData = tmpCtx.getImageData( 0, 0, width, height );
         if( color !== undefined )
         {
           if( !hexColorRegEx.test( color ) )
             alert( 'Error! "' + color + '" is not a valid color for icon recoloring! It must have a shape like "#aabbcc".' );
-          
+
           var r      = parseInt( color.substr( 1, 2 ), 16 ),
-              g      = parseInt( color.substr( 3, 2 ), 16 ),
-              b      = parseInt( color.substr( 5, 2 ), 16 );
+            g      = parseInt( color.substr( 3, 2 ), 16 ),
+            b      = parseInt( color.substr( 5, 2 ), 16 );
           innerRecolorLoop( r, g, b, imageData.data, width * height * 4 );
         }
         thisIconColors[color] = imageData;
       };
-  
-  /**
-   * Funtion to call for each icon that should be dynamically recolored.
-   * This will be called for each known URL, so only remember the string but
-   * don't load the image yet as it might not be needed.
-   */
-  window.recolorNonTransparent = function( url ) {
-    var
-      loadHandler = function(){
-        var
-          toFill         = iconCache[url].toFill,
-          thisIcon       = iconCache[url].icon,
-          thisIconColors = iconCache[url].colors,
-          thisFillColor;
-        while( thisFillColor = toFill.pop() )
-        {
-          doRecolorNonTransparent( thisFillColor, thisIcon, thisIconColors );
-        }
-      };
 
     /**
-     * will be called for each color that is actually used
-     * => load image for all colors
-     * => transform image
-     * @return {Function} a function that will append the recolored image to
-     *         the jQuery element passed to that function 
+     * Funtion to call for each icon that should be dynamically recolored.
+     * This will be called for each known URL, so only remember the string but
+     * don't load the image yet as it might not be needed.
      */
-    return function( color, styling, classes, asText )
-    {
-      if( undefined === iconCache[url] )
-      {
-        var thisIcon = new Image();
-        thisIcon.onload = loadHandler;
-        thisIcon.src = url;
-        
-        iconCache[url] = {
-          icon  : thisIcon,            // the original Image() of the icon
-          id    : iconCacheMap.length, // the unique ID for this icon
-          colors: {},                  // cache all the transformed ImageDatas
-          toFill: []                   // all the icon colors to fill once the image was loaded
+    window.recolorNonTransparent = function( url ) {
+      var
+        loadHandler = function(){
+          var
+            toFill         = iconCache[url].toFill,
+            thisIcon       = iconCache[url].icon,
+            thisIconColors = iconCache[url].colors,
+            thisFillColor;
+          while( thisFillColor = toFill.pop() )
+          {
+            doRecolorNonTransparent( thisFillColor, thisIcon, thisIconColors );
+          }
         };
-        iconCacheMap.push( url );
-      }
 
-      if( color === undefined )
-        color = '#ffffff';
-      
-      if( color in colorMapping )
-        color = colorMapping[ color ];
-      
-      var c = 'icon' + iconCache[url].id + '_' + color.substr( 1, 6 );
-      iconCache[url].toFill.push( color );
-      
-      // when already available - fill it now. Otherwise the onLoad will do it.
-      if( iconCache[url].icon.complete )
-        loadHandler();
-      
-      var newCanvas = createCanvas( c, styling, classes );
-      if( asText )
-        return newCanvas;
-      
-      var newElement = $(newCanvas)[0];
-      if( iconCache[url].icon.complete )
-        fillCanvas( newElement, iconCache[url].colors[ color ] );
-      else
-        iconDelayed( newElement, iconCache[url].colors, color );
-      
-      return newElement;
-    }
-  };
-  
-  /**
-   * This function must be called to fill a specific icon that was created
-   */
-  window.fillRecoloredIcon = function( icon ) {
-    var 
-      parameters = icon.className.split(' ')[0].substring(4).split('_');
-    if( 2 === parameters.length )
-    { 
-      var 
-        cacheEntry = iconCache[ iconCacheMap[ parameters[0] ] ],
-        coloredIcon = cacheEntry.colors[ '#' + parameters[1] ];
-        
-      if( undefined === coloredIcon )
-        iconDelayed( icon, cacheEntry.colors, '#' + parameters[1] );
-      else
-        fillCanvas( icon, coloredIcon );
-    }
-  };
-})(window);
+      /**
+       * will be called for each color that is actually used
+       * => load image for all colors
+       * => transform image
+       * @return {Function} a function that will append the recolored image to
+       *         the jQuery element passed to that function
+       */
+      return function( color, styling, classes, asText )
+      {
+        if( undefined === iconCache[url] )
+        {
+          var thisIcon = new Image();
+          thisIcon.onload = loadHandler;
+          thisIcon.src = url;
+
+          iconCache[url] = {
+            icon  : thisIcon,            // the original Image() of the icon
+            id    : iconCacheMap.length, // the unique ID for this icon
+            colors: {},                  // cache all the transformed ImageDatas
+            toFill: []                   // all the icon colors to fill once the image was loaded
+          };
+          iconCacheMap.push( url );
+        }
+
+        if( color === undefined )
+          color = '#ffffff';
+
+        if( color in colorMapping )
+          color = colorMapping[ color ];
+
+        var c = 'icon' + iconCache[url].id + '_' + color.substr( 1, 6 );
+        iconCache[url].toFill.push( color );
+
+        // when already available - fill it now. Otherwise the onLoad will do it.
+        if( iconCache[url].icon.complete )
+          loadHandler();
+
+        var newCanvas = createCanvas( c, styling, classes );
+        if( asText )
+          return newCanvas;
+
+        var newElement = $(newCanvas)[0];
+        if( iconCache[url].icon.complete )
+          fillCanvas( newElement, iconCache[url].colors[ color ] );
+        else
+          iconDelayed( newElement, iconCache[url].colors, color );
+
+        return newElement;
+      }
+    };
+
+    /**
+     * This function must be called to fill a specific icon that was created
+     */
+    window.fillRecoloredIcon = function( icon ) {
+      var
+        parameters = icon.className.split(' ')[0].substring(4).split('_');
+      if( 2 === parameters.length )
+      {
+        var
+          cacheEntry = iconCache[ iconCacheMap[ parameters[0] ] ],
+          coloredIcon = cacheEntry.colors[ '#' + parameters[1] ];
+
+        if( undefined === coloredIcon )
+          iconDelayed( icon, cacheEntry.colors, '#' + parameters[1] );
+        else
+          fillCanvas( icon, coloredIcon );
+      }
+    };
+  })(window);
 
 });

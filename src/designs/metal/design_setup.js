@@ -30,12 +30,12 @@ function getOffsetCorners(elem) {
     top_left: {top: Math.round(elem.offset().top), left: Math.round(elem.offset().left) },
     bottom_left: {top: Math.round(elem.offset().top+elem.height()), left: Math.round(elem.offset().left) },
     top_right: {top: Math.round(elem.offset().top), left: Math.round(elem.offset().left+elem.width()) },
-    bottom_right: {top: Math.round(elem.offset().top+elem.height()), left: Math.round(elem.offset().left+elem.width()) },
+    bottom_right: {top: Math.round(elem.offset().top+elem.height()), left: Math.round(elem.offset().left+elem.width()) }
   };
 }
 function roundCorners() {
   // find elements in each groups corners
-    $('.page.activePage .group:visible').each(function(i) {
+  $('.page.activePage .group:visible').each(function(i) {
       var group = $(this);
       // do not use this in navbars
       if (group.parents('.navbar').size()>0) return;

@@ -1,5 +1,7 @@
-/* _common.js (c) 2010 by Christian Mayer [CometVisu at ChristianMayer dot de]
- *
+/* _common.js 
+ * 
+ * copyright (c) 2010-2016 by Christian Mayer (ChristianMayer) [CometVisu at ChristianMayer dot de]
+ * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 3 of the License, or (at your option)
@@ -7,13 +9,18 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+ *
+ * @module _common 
+ * @title  CometVisu _common 
+ * @version 0.9.1-dev
  */
+
 
 /**
  * This module defines the widgets for the CometVisu visualisation.
@@ -23,48 +30,48 @@
 define( ['jquery'], function($) {
   "use strict";
 
-// Define ENUM of maturity levels for features, so that e.g. the editor can 
-// ignore some widgets when they are not supported yet
-var Maturity = {
+  // Define ENUM of maturity levels for features, so that e.g. the editor can 
+  // ignore some widgets when they are not supported yet
+  var Maturity = {
   release     : 0,
   development : 1
 };
 
-/**
- * This class defines all the building blocks for a Visu in the "Pure" design
- * @class VisuDesign
- */
+  /**
+   * This class defines all the building blocks for a Visu in the "Pure" design
+   * @class VisuDesign
+   */
    
-function VisuDesign() {
+  function VisuDesign() {
   var self = this;
   
   this.creators = {};
 
   this.addCreator = function (name, object) {
     this.creators[name] = object;
-  }
+  };
 
   this.getCreator = function(name) {
     if (this.creators[name] === undefined) {
       return this.creators.unknown;
     }
     return this.creators[name];
-  }
+  };
 
   var popups = {};
 
   this.addPopup = function (name, object) {
     popups[name] = object;
     popups[name].type = name;
-  }
+  };
 
   this.getPopup = function(name) {
     var p = popups[name];
     if (p === undefined) {
-        return popups.unknown;
+      return popups.unknown;
     }
     return popups[name];
-  }
+  };
 
   this.addPopup('unknown', {
     create: function( attributes ) {
@@ -73,13 +80,13 @@ function VisuDesign() {
       ret_val.addClass( this.type );
 
       if (attributes.title) {
-          ret_val.filter(".popup").append( $('<div class="head" />').append(attributes.title));
+        ret_val.filter(".popup").append( $('<div class="head" />').append(attributes.title));
       }
 
       if( attributes.content) {
-          ret_val.filter(".popup").append( $('<div class="main" />').append(attributes.content));
+        ret_val.filter(".popup").append( $('<div class="main" />').append(attributes.content));
       }
-
+      var reposition = false;
       if( attributes.width ) {
         ret_val.width( attributes.width );
         reposition = true;
@@ -148,14 +155,15 @@ function VisuDesign() {
    */
   this.defaultValueHandling = function( ga, data, widgetData )
   {
+    var thisTransform, value;
     if( undefined !== ga )
     {
-      var thisTransform = widgetData.address[ ga ][0];
+      thisTransform = widgetData.address[ ga ][0];
       // #1: transform the raw value to a JavaScript type
-      var value = templateEngine.transformDecode( thisTransform, data );
+      value = templateEngine.transformDecode( thisTransform, data );
     } else {
-      var thisTransform = '';
-      var value = data;
+      thisTransform = '';
+      value = data;
     }
     
     if( !('formatValueCache' in widgetData) )
@@ -196,7 +204,7 @@ function VisuDesign() {
         case 'OH:time':
           value = value.toLocaleTimeString();
           break;
-        }
+      }
     }
     
     // #4 will happen outside: style the value to be pretty
@@ -211,13 +219,14 @@ function VisuDesign() {
    */
   this.defaultValue2DOM = function( value, modifyFn )
   {
+    var element;
     if (('string' === typeof value) || ('number' === typeof value))
       modifyFn( value );
     else if ('function' === typeof value)
       // thisValue(valueElement);
       console.error( 'typeof value === function - special case not handled anymore!' );
     else if( !Array.isArray( value ) ) {
-      var element = value.cloneNode();
+      element = value.cloneNode();
       if( value.getContext )
       {
         fillRecoloredIcon( element );
@@ -234,7 +243,7 @@ function VisuDesign() {
           // thisValue(valueElement);
           console.error( 'typeof value === function - special case not handled anymore!' );
         else {
-          var element = thisValue.cloneNode();
+          element = thisValue.cloneNode();
           if( thisValue.getContext )
           {
             fillRecoloredIcon( element );
@@ -243,7 +252,7 @@ function VisuDesign() {
         }
       }
     }
-  }
+  };
   
   /**
    * ga:            address
@@ -271,7 +280,7 @@ function VisuDesign() {
       valueElement.append('-');
     
     return value;
-  }
+  };
   
   this.defaultUpdate3d = function( ev, data, passedElement )
   {
@@ -284,7 +293,7 @@ function VisuDesign() {
     var floorFilter = true;
     if( l.floorFilter) floorFilter = data.getState('showFloor') == data.buildingProperties.floorNames[ l.floorFilter ];
     ev.data.element.css( 'display', floorFilter ? '' : 'none' );
-  }
+  };
   
   this.extractLayout = function( layout, type, defaultValues )
   {
@@ -304,7 +313,7 @@ function VisuDesign() {
     else if( defaultValues[ 'height'] ) ret_val += 'height:' + defaultValues[      'height'] + ';';
     
     return ret_val;
-  }
+  };
   
   this.extractLayout3d = function( layout )
   {
@@ -316,7 +325,7 @@ function VisuDesign() {
     if( layout.getAttribute('floorFilter') ) ret_val.floorFilter = layout.getAttribute('floorFilter');
     if( layout.getAttribute('roomFilter')  ) ret_val.roomFilter  = layout.getAttribute('roomFilter' );
     return ret_val;
-  }
+  };
   
   this.extractLabel = function( label, flavour, labelClass, style )
   {
@@ -335,7 +344,7 @@ function VisuDesign() {
         ret_val += this.textContent;
     });
     return ret_val + '</div>';
-  }
+  };
   
   /**
   * this function extracts all addresses with attributes (JNK)
@@ -500,82 +509,82 @@ function VisuDesign() {
     actor.classList.remove('switchPressed');
     actor.classList.add('switchUnpressed');
   };
-};
-
-/*
- * Figure out best placement of popup.
- * A preference can optionally be passed. The position is that of the numbers
- * on the numeric keypad. I.e. a value of "6" means centered above the anchor.
- * A value of "0" means centered to the page
- */
-function placementStrategy( anchor, popup, page, preference )
-{
-  var position_order = [ 8, 2, 6, 4, 9, 3, 7, 1, 5, 0 ];
-  if( preference !== undefined ) position_order.unshift( preference );
-  
-  for( var pos in position_order )
-  {
-    var xy = {};
-    switch(position_order[pos])
-    {
-      case 0: // page center - will allways work
-        return { x: (page.w-popup.w)/2, y: (page.h-popup.h)/2 };
-      
-      case 1:
-        xy.x = anchor.x - popup.w;
-        xy.y = anchor.y + anchor.h;
-        break;
-      
-      case 2:
-        xy.x = anchor.x + anchor.w/2 - popup.w/2;
-        xy.y = anchor.y + anchor.h;
-        break;
-      
-      case 3:
-        xy.x = anchor.x + anchor.w;
-        xy.y = anchor.y + anchor.h;
-        break;
-      
-      case 4:
-        xy.x = anchor.x - popup.w;
-        xy.y = anchor.y + anchor.h/2 - popup.h/2;
-        break;
-      
-      case 5:
-        xy.x = anchor.x + anchor.w/2 - popup.w/2;
-        xy.y = anchor.y + anchor.h/2 - popup.h/2;
-        break;
-      
-      case 6:
-        xy.x = anchor.x + anchor.w;
-        xy.y = anchor.y + anchor.h/2 - popup.h/2;
-        break;
-      
-      case 7:
-        xy.x = anchor.x - popup.w;
-        xy.y = anchor.y - popup.h;
-        break;
-      
-      case 8:
-        xy.x = anchor.x + anchor.w/2 - popup.w/2;
-        xy.y = anchor.y - popup.h;
-        break;
-      
-      case 9:
-        xy.x = anchor.x + anchor.w;
-        xy.y = anchor.y - popup.h;
-        break;
-    }
-    
-    // test if that solution is valid
-    if( xy.x >= 0 && xy.y >= 0 && xy.x+popup.w<=page.w && xy.y+popup.h<=page.h )
-      return xy;
-  }
-  
-  return { x: 0, y: 0 }; // sanity return
 }
 
-var basicdesign = new VisuDesign();
+  /*
+   * Figure out best placement of popup.
+   * A preference can optionally be passed. The position is that of the numbers
+   * on the numeric keypad. I.e. a value of "6" means centered above the anchor.
+   * A value of "0" means centered to the page
+   */
+  function placementStrategy( anchor, popup, page, preference )
+  {
+    var position_order = [ 8, 2, 6, 4, 9, 3, 7, 1, 5, 0 ];
+    if( preference !== undefined ) position_order.unshift( preference );
+  
+    for( var pos in position_order )
+    {
+      var xy = {};
+      switch(position_order[pos])
+      {
+        case 0: // page center - will allways work
+          return { x: (page.w-popup.w)/2, y: (page.h-popup.h)/2 };
+      
+        case 1:
+          xy.x = anchor.x - popup.w;
+          xy.y = anchor.y + anchor.h;
+          break;
+      
+        case 2:
+          xy.x = anchor.x + anchor.w/2 - popup.w/2;
+          xy.y = anchor.y + anchor.h;
+          break;
+      
+        case 3:
+          xy.x = anchor.x + anchor.w;
+          xy.y = anchor.y + anchor.h;
+          break;
+      
+        case 4:
+          xy.x = anchor.x - popup.w;
+          xy.y = anchor.y + anchor.h/2 - popup.h/2;
+          break;
+      
+        case 5:
+          xy.x = anchor.x + anchor.w/2 - popup.w/2;
+          xy.y = anchor.y + anchor.h/2 - popup.h/2;
+          break;
+      
+        case 6:
+          xy.x = anchor.x + anchor.w;
+          xy.y = anchor.y + anchor.h/2 - popup.h/2;
+          break;
+      
+        case 7:
+          xy.x = anchor.x - popup.w;
+          xy.y = anchor.y - popup.h;
+          break;
+      
+        case 8:
+          xy.x = anchor.x + anchor.w/2 - popup.w/2;
+          xy.y = anchor.y - popup.h;
+          break;
+      
+        case 9:
+          xy.x = anchor.x + anchor.w;
+          xy.y = anchor.y - popup.h;
+          break;
+      }
+    
+      // test if that solution is valid
+      if( xy.x >= 0 && xy.y >= 0 && xy.x+popup.w<=page.w && xy.y+popup.h<=page.h )
+        return xy;
+    }
+  
+    return { x: 0, y: 0 }; // sanity return
+  }
+
+  var basicdesign = new VisuDesign();
 
   return {
     basicdesign: basicdesign,

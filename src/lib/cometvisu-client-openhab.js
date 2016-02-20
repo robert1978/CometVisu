@@ -1,5 +1,7 @@
-/* cometvisu-client-openhab.js (c) 2015 by Tobias Bräutigam [tbraeutigam at gmail dot com]
- *
+/* cometvisu-client-openhab.js 
+ * 
+ * copyright (c) 2010-2016 by Christian Mayer (ChristianMayer) [CometVisu at ChristianMayer dot de]
+ * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 3 of the License, or (at your option)
@@ -7,13 +9,18 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+ *
+ * @module Cometvisu-client-openhab 
+ * @title  CometVisu Cometvisu-client-openhab 
+ * @version 0.9.1-dev
  */
+
 
 /**
  * The JavaScript library that implements the CometVisu protocol.
@@ -24,17 +31,17 @@
 
 define( ['cometvisu-client'], function( CometVisu ) {
   "use strict";
-  
-/**
- * Class that handles the communicaton of the client
- * 
- * @class CometVisu
- * @constructor foo
- * @param {String}
- *          urlPrefix The address of the service
- */
 
-function CometVisuOh(urlPrefix) {
+  /**
+   * Class that handles the communicaton of the client
+   *
+   * @class CometVisu
+   * @constructor foo
+   * @param {String}
+   *          urlPrefix The address of the service
+   */
+
+  function CometVisuOh(urlPrefix) {
     var thisVisu = this;
     this.urlPrefix = "/rest/cv/";
     this.eventSource = null; // the EventSource
@@ -42,7 +49,7 @@ function CometVisuOh(urlPrefix) {
     /**
      * This function gets called once the communication is established and
      * session information is available
-     * 
+     *
      * @method handleSession
      */
     this.handleSession = function(json) {
@@ -51,12 +58,12 @@ function CometVisuOh(urlPrefix) {
 
       if (0 < parseInt(this.version[0]) || 1 < parseInt(this.version[1]))
         alert('ERROR CometVisu Client: too new protocol version (' + json.v
-            + ') used!');
+          + ') used!');
 
       // send first request
       this.running = true;
       this.eventSource = new EventSource(this.urlPrefix + 'r?'
-          + this.buildRequest());
+        + this.buildRequest());
       this.eventSource.addEventListener('message', this.handleMessage, false);
       this.eventSource.addEventListener('error', this.handleError, false);
     };
@@ -77,7 +84,7 @@ function CometVisuOh(urlPrefix) {
 
     /**
      * Abort the read request properly
-     * 
+     *
      * @method restart
      */
     this.abort = function() {
@@ -88,7 +95,7 @@ function CometVisuOh(urlPrefix) {
 
     /**
      * This function stops an ongoing connection
-     * 
+     *
      * @method stop
      */
     this.stop = function() {
@@ -99,16 +106,16 @@ function CometVisuOh(urlPrefix) {
 
     /**
      * prevent the watchdog from restarting
-     * 
+     *
      * @method restart
      */
     this.restart = function() {
     }
-};
-CometVisuOh.prototype = new CometVisu('/rest/cv/');
-CometVisuOh.prototype.constructor = CometVisuOh;
-CometVisuOh.prototype.update = function(json) {
-};
+  };
+  CometVisuOh.prototype = new CometVisu('/rest/cv/');
+  CometVisuOh.prototype.constructor = CometVisuOh;
+  CometVisuOh.prototype.update = function(json) {
+  };
 
   return CometVisuOh;
 });

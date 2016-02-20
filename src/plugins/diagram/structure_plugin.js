@@ -122,7 +122,7 @@ define( ['structure_custom',
           
         if( widgetData.popup )
           action( path, actor, isCaneled );
-      },
+      }
     });
     VisuDesign_Custom.prototype.addCreator("diagram_info", {
       create: function(element, path, flavour, type) {
@@ -265,7 +265,7 @@ define( ['structure_custom',
           tickDecimals  : this.getAttribute('decimals') || null,
           tickFormatter : function (v, axis) {
             return v.toFixed(axis.tickDecimals) + unit;
-          },
+          }
         };
         retVal.axesnum++;
         axesNameIndex[this.textContent] = retVal.axesnum;
@@ -317,20 +317,20 @@ define( ['structure_custom',
           xDateFormat  : data.timeformatTooltip,
           shifts       : {
             x : 20,
-            y : 10,
+            y : 10
           },
-          defaultTheme : false,
+          defaultTheme : false
         },
         zoom    : {
           interactive: isPopup,
           trigger: "dblclick",
-          amount: 1.5,
+          amount: 1.5
         },
         pan     : {
           interactive: isPopup,
           cursor: "move",
           frameRate: 20,
-          triggerOnDrag : false,
+          triggerOnDrag : false
         },
         yaxes  : $.extend( true, [], data.content.axes ), // copy to prevent side effects
         xaxes  : [{
@@ -363,11 +363,11 @@ define( ['structure_custom',
         $.extend(true, options, {
           yaxis : {
             isPopup   : true,
-            zoomRange : data.zoomYAxis ? [null, null] : false,
+            zoomRange : data.zoomYAxis ? [null, null] : false
           },
           xaxis : {
             zoomRange : [null, null],
-            panRange  : [null, null],
+            panRange  : [null, null]
           }
         });
       }
@@ -408,19 +408,19 @@ define( ['structure_custom',
         fullday : {res: "300",    start: "day",   end: "midnight+24hour"},
         week    : {res: "1800",   start: "week",  end: "now"},
         month   : {res: "21600",  start: "month", end: "now"},
-        year    : {res: "432000", start: "year",  end: "now"},
+        year    : {res: "432000", start: "year",  end: "now"}
       };
 
       var ret = {
         start : null,
         end   : null,
-        res   : null,
+        res   : null
       };
       if (data.series == "custom") {
         // initial load, take parameters from custom configuration
-  	    ret.start = data.seriesStart;
-  	    ret.end = data.seriesEnd;
-  	    ret.res = data.seriesResolution;
+        ret.start = data.seriesStart;
+        ret.end = data.seriesEnd;
+        ret.res = data.seriesResolution;
       }
       else {
         var selectedSeries = series[data.series];
@@ -429,9 +429,9 @@ define( ['structure_custom',
         }
 
         // initial load, take parameters from configuration
-  	    ret.start = "end-" + data.period + selectedSeries.start;
-  	    ret.end = selectedSeries.end;
-  	    ret.res = selectedSeries.res;
+        ret.start = "end-" + data.period + selectedSeries.start;
+        ret.end = selectedSeries.end;
+        ret.res = selectedSeries.res;
       }
 
       if (xAxis.datamin && xAxis.datamax && isInteractive) {
@@ -510,4 +510,4 @@ define( ['structure_custom',
         });
       });
     }
-});
+  });

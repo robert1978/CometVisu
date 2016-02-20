@@ -22,11 +22,11 @@
 
 require.config({
   shim: {
-    'plugins/openweathermap/owm/jquery.owm': ['jquery']
+    'plugins/openweathermap/dep/jquery.owm': ['jquery']
   }
 });
 
-define(['structure_custom', 'css!plugins/openweathermap/openweathermap', 'plugins/openweathermap/owm/jquery.owm'], function(VisuDesign_Custom) {
+define(['structure_custom', 'css!plugins/openweathermap/openweathermap', 'dep/jquery.owm.js'], function(VisuDesign_Custom) {
 
   VisuDesign_Custom.prototype.addCreator("openweathermap", {
     create : function(page, path) {

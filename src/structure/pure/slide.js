@@ -1,5 +1,7 @@
-/* slide.js (c) 2012 by Christian Mayer [CometVisu at ChristianMayer dot de]
- *
+/* slide.js 
+ * 
+ * copyright (c) 2010-2016 by Christian Mayer (ChristianMayer) [CometVisu at ChristianMayer dot de]
+ * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 3 of the License, or (at your option)
@@ -7,13 +9,18 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+ *
+ * @module Slide 
+ * @title  CometVisu Slide 
+ * @version 0.9.1-dev
  */
+
 
 define( ['_common'], function( design ) {
   "use strict";
@@ -34,7 +41,7 @@ define( ['_common'], function( design ) {
     }
   }
 
-design.basicdesign.addCreator('slide', {
+  design.basicdesign.addCreator('slide', {
   create: function( element, path, flavour, type ) {
     var self = this,
         $e = $(element);
@@ -71,11 +78,11 @@ design.basicdesign.addCreator('slide', {
     // check provided address-items for at least one address which has write-access
     var readonly = true;
     for (var addrIdx in data.address) {
-        if (data.address[addrIdx][1] & 2) {
-            // write-access detected --> no read-only mode
-            readonly = false;
-            break;
-        }
+      if (data.address[addrIdx][1] & 2) {
+        // write-access detected --> no read-only mode
+        readonly = false;
+        break;
+      }
     }
     
     // create the actor
@@ -93,7 +100,7 @@ design.basicdesign.addCreator('slide', {
       });
       // disable slider interaction if in read-only mode --> just show the value
       if (readonly) {
-          $actor.slider({ disabled: true });
+        $actor.slider({ disabled: true });
       }
       $actor.on( 'slide', self.slideUpdateValue );
       
