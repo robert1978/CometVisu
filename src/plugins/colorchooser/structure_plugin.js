@@ -15,7 +15,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 */
 
-define( ['structure_custom', 'css!dep/farbtastic/farbtastic.css', 'dep/farbtastic/farbtastic' ], function(VisuDesign_Custom ) {
+define( ['structure_custom', 'css!plugins/colorchooser/dep/farbtastic/farbtastic.css', 'plugins/colorchooser/dep/farbtastic/farbtastic' ], function(VisuDesign_Custom ) {
   "use strict";
 
   /**
