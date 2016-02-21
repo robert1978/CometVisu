@@ -248,6 +248,21 @@ module.exports = function(grunt) {
       }
     },
 
+    jsdoc : {
+      dist : {
+        src: [
+          'src/lib/**/*.js',
+          'src/plugins/**/*.js',
+          'src/structure/**/*.js'
+        ],
+        options: {
+          destination: 'doc',
+          template : "node_modules/ink-docstrap/template",
+          configure : "node_modules/ink-docstrap/template/jsdoc.conf.json"
+        }
+      }
+    },
+
     clean: {
       archives : ['*.zip', '*.gz'],
       release: ['release/']
@@ -264,6 +279,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-github-releaser');
   grunt.loadNpmTasks('grunt-prompt');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-jsdoc');
 
   // Default task runs all code checks, updates the banner and builds the release
   //grunt.registerTask('default', [ 'jshint', 'jscs', 'usebanner', 'requirejs', 'manifest', 'compress:tar', 'compress:zip' ]);
