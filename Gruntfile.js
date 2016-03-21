@@ -376,7 +376,9 @@ module.exports = function(grunt) {
     svgmin: {
       options: {
         plugins: [
-          {convertTransform: false}
+          {
+            convertTransform: false
+          }
         ]
       },
       dist: {
@@ -422,6 +424,14 @@ module.exports = function(grunt) {
     grunt.file.write(filename, config.replace(/comet_16x16_000000.png/g, 'comet_16x16_ff8000.png'));
   });
 
+  // custom task to update the version in the releases demo config
+  grunt.registerTask('modify-viewbox', function() {
+    grunt.file.expand('cache/icons/*.svg').forEach(function(filename) {
+      var config = grunt.file.read(filename, {encoding: "utf8"}).toString();
+      grunt.file.write(filename, config.replace('viewBox="0 0 361 361"', 'viewBox="0 0 222 222" transform="translate(-111, -111)"'));
+    });
+  });
+
   // Load the plugin tasks
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -448,7 +458,7 @@ module.exports = function(grunt) {
   grunt.registerTask('release', [ 'prompt', 'build', 'github-release' ]);
 
   // create a chained task for webfont generation
-  grunt.registerTask('generate-font', ['clean:font', 'svgmin', 'webfont', 'exec:make_woff', 'exec:make_eot']);
+  grunt.registerTask('generate-font', ['clean:font', 'svgmin', 'modify-viewbox', 'webfont', 'exec:make_woff', 'exec:make_eot']);
 
   grunt.registerTask('default', 'build');
 };

@@ -13,9 +13,7 @@
 }
 
 .icon {
-
   font-family:"KNX-UF-Webfont";
-
   display:inline-block;
   vertical-align:middle;
   line-height:1;
@@ -27,6 +25,7 @@
   text-rendering:auto;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+  padding: 0.4em 0.3em 0 0;
 }
 
 body 

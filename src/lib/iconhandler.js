@@ -216,7 +216,7 @@ define( ['icon/iconconfig', 'lib/iconset'], function( iconconfig, iconset ) {
       if (svgIcon !== null) {
         var style="";
         var classes="icon";
-        var size = "2em";
+        var size = "1.5em";
         if (type && +type===parseInt(type)) {
           size = parseInt(type)+"px";
         }
